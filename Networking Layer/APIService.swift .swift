@@ -4,11 +4,13 @@
 //
 //  Created by Noman Belim on 04/12/25.
 //
+
 import Foundation
 
 // MARK: - HTTP Method
 
-enum HTTPMethod: String {
+/// Public HTTP methods supported by the networking layer.
+public enum HTTPMethod: String {
     case get     = "GET"
     case post    = "POST"
     case put     = "PUT"
@@ -18,26 +20,42 @@ enum HTTPMethod: String {
 // MARK: - Interceptors
 
 /// Allows you to modify a request before it is sent (e.g. add auth headers).
-protocol RequestInterceptor {
+public protocol RequestInterceptor {
     func intercept(_ request: URLRequest) -> URLRequest
 }
 
 /// Allows you to observe / react to every response (e.g. global logging, token refresh).
-protocol ResponseInterceptor {
+public protocol ResponseInterceptor {
     func intercept(data: Data?, response: URLResponse?, error: Error?)
 }
 
 // MARK: - API Service (Reusable Networking Layer)
 
-class APIService {
+/// Reusable networking service that supports GET / POST / PUT / DELETE with
+/// logging, error handling and interceptor support.
+public final class APIService {
     
-    static let shared = APIService()
-    private init() {}
+    /// Shared singleton instance, convenient for most apps.
+    public static let shared = APIService()
     
-    private let session: URLSession = .shared
+    private let session: URLSession
+    
+    /// Designated initializer, public so advanced users can inject their own `URLSession`.
+    public init(session: URLSession = .shared) {
+        self.session = session
+    }
     
     /// Low‑level, reusable request handler that supports all HTTP methods.
-    func request(
+    ///
+    /// - Parameters:
+    ///   - url: Endpoint URL.
+    ///   - method: HTTP method (GET/POST/PUT/DELETE).
+    ///   - headers: Extra HTTP headers.
+    ///   - body: Optional HTTP body.
+    ///   - requestInterceptors: Interceptors run before the request is sent.
+    ///   - responseInterceptors: Interceptors run after a response/error is received.
+    ///   - completion: Called with `Result<Data, APIError>`.
+    public func request(
         url: URL,
         method: HTTPMethod = .get,
         headers: [String: String] = [:],
@@ -96,7 +114,8 @@ class APIService {
     
     // MARK: - Convenience helpers for common HTTP verbs
     
-    func get(
+    /// Convenience GET wrapper around `request(...)`.
+    public func get(
         url: URL,
         headers: [String: String] = [:],
         requestInterceptors: [RequestInterceptor] = [],
@@ -114,7 +133,8 @@ class APIService {
         )
     }
     
-    func post(
+    /// Convenience POST wrapper around `request(...)`.
+    public func post(
         url: URL,
         headers: [String: String] = [:],
         body: Data? = nil,
@@ -133,7 +153,8 @@ class APIService {
         )
     }
     
-    func put(
+    /// Convenience PUT wrapper around `request(...)`.
+    public func put(
         url: URL,
         headers: [String: String] = [:],
         body: Data? = nil,
@@ -152,7 +173,8 @@ class APIService {
         )
     }
     
-    func delete(
+    /// Convenience DELETE wrapper around `request(...)`.
+    public func delete(
         url: URL,
         headers: [String: String] = [:],
         requestInterceptors: [RequestInterceptor] = [],
@@ -170,4 +192,5 @@ class APIService {
         )
     }
 }
+
 

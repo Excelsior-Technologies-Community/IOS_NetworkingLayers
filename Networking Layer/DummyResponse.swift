@@ -7,6 +7,8 @@
 
 import Foundation
 
+// MARK: - Dummy data (example only, not needed by the library user)
+
 struct DummyResponse {
     static let products = """
     [
@@ -17,18 +19,19 @@ struct DummyResponse {
     """.data(using: .utf8)!
 }
 
-// MARK: - Useful for debugging.
-struct Logger {
-    static func log(_ message: String) {
+// MARK: - Useful for debugging (exposed publicly)
+
+public struct Logger {
+    public static func log(_ message: String) {
         #if DEBUG
         print(message)
         #endif
     }
 }
 
-// MARK: - Readable error messages.
+// MARK: - Readable error messages (exposed publicly)
 
-enum APIError: Error {
+public enum APIError: Error {
     case network(String)       // Underlying URLSession / connectivity issues
     case invalidResponse       // Response is not HTTP or missing
     case server(String)        // Non‑2xx status code
@@ -36,15 +39,18 @@ enum APIError: Error {
     case unknown               // Fallback for unexpected issues
 }
 
-// MARK: - All API URLs placed here.
+// MARK: - All API URLs placed here (example)
 
 enum APIEndpoint {
     case products
- var url: URL {
-    switch self {
-    case .products:
-        return URL(string: "https://this-domain-does-not-exist-12345.com")!
+    
+    var url: URL {
+        switch self {
+        case .products:
+            // You can change this to any endpoint while testing.
+            return URL(string: "https://jsonplaceholder.typicode.com/posts")!
+        }
     }
 }
-}
+
 

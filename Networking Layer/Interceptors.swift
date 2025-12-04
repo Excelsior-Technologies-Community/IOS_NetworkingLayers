@@ -8,8 +8,10 @@
 import Foundation
 
 /// Simple example: adds a debug header to every request.
-struct DebugHeaderInterceptor: RequestInterceptor {
-    func intercept(_ request: URLRequest) -> URLRequest {
+public struct DebugHeaderInterceptor: RequestInterceptor {
+    public init() {}
+    
+    public func intercept(_ request: URLRequest) -> URLRequest {
         var req = request
         req.addValue("12345", forHTTPHeaderField: "X-Debug-Id")
         Logger.log("🔧 DebugHeaderInterceptor added X-Debug-Id header")
@@ -18,10 +20,14 @@ struct DebugHeaderInterceptor: RequestInterceptor {
 }
 
 /// Real-world example: adds an Authorization header (for logged-in APIs).
-struct AuthInterceptor: RequestInterceptor {
-    let token: String   // in a real app, this comes from login / Keychain
+public struct AuthInterceptor: RequestInterceptor {
+    public let token: String   // in a real app, this comes from login / Keychain
     
-    func intercept(_ request: URLRequest) -> URLRequest {
+    public init(token: String) {
+        self.token = token
+    }
+    
+    public func intercept(_ request: URLRequest) -> URLRequest {
         var req = request
         req.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         Logger.log("🔐 AuthInterceptor added Authorization header")
@@ -30,8 +36,10 @@ struct AuthInterceptor: RequestInterceptor {
 }
 
 /// Simple example: logs status code or error for every response.
-struct DebugResponseInterceptor: ResponseInterceptor {
-    func intercept(data: Data?, response: URLResponse?, error: Error?) {
+public struct DebugResponseInterceptor: ResponseInterceptor {
+    public init() {}
+    
+    public func intercept(data: Data?, response: URLResponse?, error: Error?) {
         if let http = response as? HTTPURLResponse {
             Logger.log("🔍 DebugResponseInterceptor saw status: \(http.statusCode)")
         }
@@ -40,3 +48,5 @@ struct DebugResponseInterceptor: ResponseInterceptor {
         }
     }
 }
+
+

@@ -1,0 +1,15 @@
+{
+  "originHash" : "542c1353d3d20c9d2411807218f9147e2b41458b0872d717c3f1471d79db936a",
+  "pins" : [
+    {
+      "identity" : "excelsior-technologies-communit-ios_toastsystem",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Excelsior-Technologies-Community/Excelsior-Technologies-Communit-IOS_ToastSystem",
+      "state" : {
+        "branch" : "stages",
+        "revision" : "272bd26b514fea224fccbdf2e872ff71c14d8570"
+      }
+    }
+  ],
+  "version" : 3
+}

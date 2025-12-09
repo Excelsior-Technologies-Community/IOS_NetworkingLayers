@@ -33,7 +33,7 @@ https://github.com/Excelsior-Technologies-Community/excelsior-Technologies-Commu
 ### **Step 5: Import it in your Swift file**
 
 ```swift
-import NetworkingLayers
+IOSNetworkingLayers
 ```
 
 You're ready to use it 🎉

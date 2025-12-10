@@ -2,34 +2,21 @@
 import PackageDescription
 
 let package = Package(
-    name: "IOSNetworkingLayers",
+    name: "NetworkingLayer",
     platforms: [
-        .iOS(.v15)
+        .iOS(.v14),        // you may adjust minimum iOS version
+        .macOS(.v11)
     ],
     products: [
-        // This is the library other projects will import.
         .library(
-            name: "IOSNetworkingLayers",
-            targets: ["IOSNetworkingLayers"]
+            name: "NetworkingLayer",
+            targets: ["NetworkingLayer"]
         )
     ],
     targets: [
-        // Target that contains your reusable networking layer code.
         .target(
-            name: "IOSNetworkingLayers",
-            // Your Swift files live under the "Networking Layer" folder.
-            path: "Networking Layer",
-            // Only include the core networking files in the package target.
-            sources: [
-                "APIService.swift .swift",
-                "Interceptors.swift",
-                "DummyResponse.swift"
-            ],
-            resources: [
-                // No resources for now.
-            ]
+            name: "NetworkingLayer",
+            path: "Sources/NetworkingLayer"
         )
     ]
 )
-
-

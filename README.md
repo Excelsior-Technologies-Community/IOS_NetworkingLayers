@@ -1,315 +1,173 @@
+ 
+# 🚀 **NetworkingLayer — Simple Swift Networking for GET/POST**
 
-# # 🚀 iOS Networking Layer — Swift Networking Made Simple
+A lightweight Swift networking package that allows developers to call APIs in just **one line**, using:
 
-A reusable, modular, and scalable **Networking Layer** built using **Swift**, compatible with **MVC** and **MVVM** architecture.
-This package provides:
+* `SimpleAPI` (super easy)
+* `APIService` (advanced control)
 
-* A generic **API Handler**
-* Support for **GET / POST / PUT / DELETE**
-* Built-in **Logging**
-* Built-in **Error Handling**
-* Optional **Interceptors** (Auth token, headers, etc.)
-* Fully testable with **dummy API responses**
-* Super easy-to-use for beginners and teams
+This package supports:
+
+✔ GET
+✔ POST
+✔ PUT
+✔ DELETE
+✔ Error Handling
+✔ Logging
+✔ Clean, reusable architecture
 
 ---
 
-# ## 📦 Installation — Add as Swift Package Dependency
+# 📦 **Installation (Swift Package Manager)**
 
-### **Step 1: Open Xcode → File → Add Package Dependency**
-
-### **Step 2: Paste this URL**
+1. Open Xcode → **File → Add Packages…**
+2. Paste the repo URL:
 
 ```
 https://github.com/Excelsior-Technologies-Community/excelsior-Technologies-Community-IOS_NetworkingLayers.git
 ```
 
-### **Step 3: Choose Version Rule**
-
-→ Recommended: **Up To Next Major (Semantic Versioning)**
-
-### **Step 4: Select Your App Target & Finish**
-
-### **Step 5: Import it in your Swift file**
+3. Add to your project
+4. Import the package:
 
 ```swift
-IOSNetworkingLayers
+import NetworkingLayer
 ```
 
-You're ready to use it 🎉
+You're ready to call APIs 🎉
 
 ---
 
-# ## 🧱 Project Structure
+# 📘 **How to Use (Examples for ContentView.swift)**
 
-```
-NetworkingLayers/
-│
-├── Package.swift
-├── Sources/
-│   └── NetworkingLayers/
-│       ├── APIService.swift
-│       ├── APIEndpoint.swift
-│       ├── APIError.swift
-│       ├── Logger.swift
-│       ├── Interceptor.swift
-│       └── DummyData.swift
-└── Tests/
-```
+Below are the **only examples developers need** to use this package inside their SwiftUI project.
 
 ---
 
-# ## 🧩 Features Overview
-
-### ✔ **Reusable API Handler**
-
-A single handler that performs all HTTP requests.
-
-### ✔ **Supports GET / POST / PUT / DELETE**
-
-All major HTTP methods supported.
-
-### ✔ **Logging**
-
-Logs:
-
-* URL
-* Method
-* Status Codes
-* Body
-
-### ✔ **Error Handling**
-
-Handles:
-
-* No Internet
-* Invalid Response
-* Server Errors
-* Decoding Errors
-
-### ✔ **Interceptors**
-
-Manipulate requests before sending them:
-
-* Add Authorization Token
-* Add Custom Headers
-* Refresh expired token
-
----
-
-# ## 📘 How to Use (Step-by-Step)
-
----
-
-# ### 1️⃣ Define Your Endpoint
-
-Every API endpoint goes in **APIEndpoint.swift**:
+# ⚡ **1️⃣ Simple GET Request (Super Easy)**
 
 ```swift
-enum APIEndpoint {
-    case products
-    case login
+import SwiftUI
+import NetworkingLayer
 
-    var url: URL {
-        switch self {
-        case .products:
-            return URL(string: "https://jsonplaceholder.typicode.com/posts")!
-        case .login:
-            return URL(string: "https://reqres.in/api/login")!
-        }
-    }
-
-    var method: HTTPMethod {
-        switch self {
-        case .products: return .get
-        case .login: return .post
-        }
-    }
-}
-```
-
----
-
-# ### 2️⃣ Call API using APIService
-
-### **GET Request Example**
-
-```swift
-APIService.shared.request(endpoint: .products) { result in
-    switch result {
-    case .success(let data):
-        let products = try? JSONDecoder().decode([Product].self, from: data)
-        print(products ?? [])
-    case .failure(let error):
-        print("Error:", error.localizedDescription)
-    }
-}
-```
-
----
-
-### **POST Request Example**
-
-```swift
-let body = ["email": "noman@test.com", "password": "123456"]
-
-APIService.shared.request(endpoint: .login, body: body) { result in
-    switch result {
-    case .success(let data):
-        print("Logged in!")
-    case .failure(let error):
-        print("Login Failed:", error.localizedDescription)
-    }
-}
-```
-
----
-
-# ### 3️⃣ Using the Networking Layer in MVVM
-
-### **ViewModel**
-
-```swift
-class ProductViewModel: ObservableObject {
-    @Published var products: [Product] = []
-
-    func loadProducts() {
-        APIService.shared.request(endpoint: .products) { result in
-            switch result {
-            case .success(let data):
-                if let decoded = try? JSONDecoder().decode([Product].self, from: data) {
-                    DispatchQueue.main.async {
-                        self.products = decoded
-                    }
-                }
-            case .failure(let error):
-                print("Error:", error.localizedDescription)
-            }
-        }
-    }
-}
-```
-
----
-
-### **SwiftUI View**
-
-```swift
-struct ProductScreen: View {
-    @StateObject var vm = ProductViewModel()
+struct ContentView: View {
 
     var body: some View {
-        List(vm.products) { product in
-            Text(product.title)
-        }
-        .onAppear {
-            vm.loadProducts()
+        VStack {
+            Button("Test GET API") {
+                testGetAPI()
+            }
+            .padding()
         }
     }
-}
-```
 
----
+    func testGetAPI() {
+        SimpleAPI.call(
+            url: "https://jsonplaceholder.typicode.com/posts",
+            method: .get
+        ) { result in
 
-# ### 4️⃣ Using Networking Layer in MVC
-
-### **ViewController**
-
-```swift
-class ProductController: UIViewController {
-
-    var products: [Product] = []
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        APIService.shared.request(endpoint: .products) { result in
             switch result {
             case .success(let data):
-                self.products = (try? JSONDecoder().decode([Product].self, from: data)) ?? []
+                print("API Response:")
+                print(String(data: data, encoding: .utf8)!)
+
             case .failure(let error):
-                print("Error:", error.localizedDescription)
+                print("API Error:", error.description)
             }
         }
     }
 }
+
+#Preview {
+    ContentView()
+}
 ```
 
 ---
 
-# ## 🧪 Dummy API Support (No backend required)
-
-Developers can test without real server:
+# ⚡ **2️⃣ Simple POST Request**
 
 ```swift
-let data = DummyData.products
-let decoded = try? JSONDecoder().decode([Product].self, from: data)
+SimpleAPI.call(
+    url: "https://reqres.in/api/login",
+    method: .post,
+    body: [
+        "email": "user@test.com",
+        "password": "123456"
+    ]
+) { result in
+    switch result {
+    case .success(let data):
+        print(String(data: data, encoding: .utf8)!)
+    case .failure(let error):
+        print(error.description)
+    }
+}
 ```
 
 ---
 
-# ## 🛠 Interceptors (Optional)
-
-Interceptors run BEFORE the request is sent.
-
-Examples:
-
-* Add Auth Token
-* Add Headers
-* Modify request body
+# 🔥 **3️⃣ Advanced GET Using APIService**
 
 ```swift
-Interceptor.shared.addAuthToken("token_123")
+APIService.shared.get(
+    url: URL(string: "https://jsonplaceholder.typicode.com/posts")!
+) { result in
 
-Interceptor.shared.setHeader("App-Version", value: "1.0.0")
+    switch result {
+    case .success(let data):
+        print(String(data: data, encoding: .utf8)!)
+
+    case .failure(let error):
+        print("API Error:", error.description)
+    }
+}
 ```
-
-The APIService applies these automatically.
 
 ---
 
-# ## 🐞 Error Handling
-
-Your APIError covers:
-
-| Error                  | Meaning               |
-| ---------------------- | --------------------- |
-| `.noInternet`          | No network connection |
-| `.serverError(status)` | Backend error         |
-| `.invalidResponse`     | Response corrupted    |
-| `.decodeError`         | JSON decoding failed  |
-
-Use in UI:
+# 🔥 **4️⃣ Advanced POST Using APIService**
 
 ```swift
-.catch { error in showToast(error.localizedDescription) }
+APIService.shared.post(
+    url: URL(string: "https://reqres.in/api/login")!,
+    body: [
+        "email": "test@mail.com",
+        "password": "12345"
+    ]
+) { result in
+    print(result)
+}
 ```
 
 ---
 
-# ## 📝 Logging
+# 🧪 **5️⃣ Decode JSON into Model Example**
 
-All logs printed automatically:
+Create your model:
 
+```swift
+struct Post: Codable, Identifiable {
+    let id: Int
+    let title: String
+}
 ```
-🌐 GET: https://dummy.com/products
-📥 Status Code: 200
-📦 Response Size: 230 bytes
+
+Call API & decode:
+
+```swift
+APIService.shared.get(
+    url: URL(string: "https://jsonplaceholder.typicode.com/posts")!
+) { result in
+    switch result {
+    case .success(let data):
+        let posts = try? JSONDecoder().decode([Post].self, from: data)
+        print(posts ?? [])
+
+    case .failure(let error):
+        print(error.description)
+    }
+}
 ```
-
----
-
-# ## ❤️ Contribution
-
-Pull Requests & Issues welcome!
-
----
-
-# ## 📄 License
-
-MIT License.
-
----
-
-# ✅ Done!
  

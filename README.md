@@ -24,7 +24,7 @@ This package supports:
 2. Paste the repo URL:
 
 ```
-https://github.com/Excelsior-Technologies-Community/excelsior-Technologies-Community-IOS_NetworkingLayers.git
+https://github.com/Excelsior-Technologies-Community/IOS_NetworkingLayers
 ```
 
 3. Add to your project
@@ -34,17 +34,17 @@ https://github.com/Excelsior-Technologies-Community/excelsior-Technologies-Commu
 import NetworkingLayer
 ```
 
-You're ready to call APIs 🎉
+You're ready to call APIs 
 
 ---
 
-# 📘 **How to Use (Examples for ContentView.swift)**
+#   **How to Use (Examples for ContentView.swift)**
 
 Below are the **only examples developers need** to use this package inside their SwiftUI project.
 
 ---
 
-# ⚡ **1️⃣ Simple GET Request (Super Easy)**
+#   **  Simple GET Request (Super Easy)**
 
 ```swift
 import SwiftUI
@@ -86,7 +86,7 @@ struct ContentView: View {
 
 ---
 
-# ⚡ **2️⃣ Simple POST Request**
+#   **  Simple POST Request**
 
 ```swift
 SimpleAPI.call(
@@ -108,7 +108,7 @@ SimpleAPI.call(
 
 ---
 
-# 🔥 **3️⃣ Advanced GET Using APIService**
+#   **  Advanced GET Using APIService**
 
 ```swift
 APIService.shared.get(
@@ -127,7 +127,7 @@ APIService.shared.get(
 
 ---
 
-# 🔥 **4️⃣ Advanced POST Using APIService**
+#   **  Advanced POST Using APIService**
 
 ```swift
 APIService.shared.post(
@@ -143,7 +143,7 @@ APIService.shared.post(
 
 ---
 
-# 🧪 **5️⃣ Decode JSON into Model Example**
+#   **  Decode JSON into Model Example**
 
 Create your model:
 

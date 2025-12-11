@@ -1,5 +1,5 @@
  
-# 🚀 **NetworkingLayer — Simple Swift Networking for GET/POST**
+#  **NetworkingLayer — Simple Swift Networking for GET/POST**
 
 A lightweight Swift networking package that allows developers to call APIs in just **one line**, using:
 
@@ -18,7 +18,7 @@ This package supports:
 
 ---
 
-# 📦 **Installation (Swift Package Manager)**
+#  **Installation (Swift Package Manager)**
 
 1. Open Xcode → **File → Add Packages…**
 2. Paste the repo URL:
